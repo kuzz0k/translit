@@ -2,7 +2,6 @@
     --grey: #2c3333;
     --light_grey: #e9f5db;
     --green: #84a98c;
-    --dark_green: #232828;
 }
 
 @media screen and (min-width: 450px) {
@@ -67,6 +66,7 @@ button {
     cursor: pointer;
     height: 40px;
     outline: none;
+    color: var(--grey);
 }
 
 #output {
@@ -80,4 +80,14 @@ button, input[type="submit"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+}
+
+input::selection {
+    background-color: var(--grey);
+    color: var(--green); 
+}
+
+::selection {
+    background-color: var(--green);
+    color: var(--grey);
 }
