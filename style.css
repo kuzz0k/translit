@@ -76,3 +76,6 @@ button {
     max-width: 450px;
 }
 
+button, input[type="submit"] {
+    -webkit-tap-highlight-color: transparent;
+}
