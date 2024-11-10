@@ -65,3 +65,10 @@ function displayMessage() {
         document.getElementById('output').innerText = "";
     }
 }
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        displayMessage();
+    }
+});
+
