@@ -55,6 +55,7 @@ input {
     margin: 10px 0;
     height: 20px;
     outline: none;
+    font-family: initial;
 }
 
 button {
