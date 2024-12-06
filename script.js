@@ -64,6 +64,7 @@ function displayMessage() {
     } else {
         document.getElementById('output').innerText = "";
     }
+    document.getElementById('messageInput').value = ''
 }
 
 document.addEventListener('keydown', function(event) {
