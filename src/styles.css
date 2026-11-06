@@ -1,0 +1,693 @@
+:root {
+    --grey: #2c3333;
+    --light_grey: #e9f5db;
+    --green: #84a98c;
+    --green_soft: rgba(132, 169, 140, 0.4);
+    --red: #e07a6f;
+    --orange: #e0a36f;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media screen and (min-width: 450px) {
+    .send {
+        border-radius: 0 10px 10px 0;
+    }
+
+    .field input {
+        border-radius: 10px 0 0 10px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .send {
+        border-radius: 10px;
+    }
+
+    .field input {
+        border-radius: 10px;
+    }
+}
+
+body {
+    font-family: 'Inconsolata', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 20vh 16px 40px;
+    margin: 0;
+    background-color: var(--grey);
+}
+
+#root {
+    width: 100%;
+}
+
+.app {
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: center;
+    transition: max-width 0.45s var(--ease);
+}
+
+/* На вкладке «тренажёр» — больше места для текста */
+.app.wide {
+    max-width: 760px;
+}
+
+h1 {
+    color: var(--light_grey);
+    font-size: 35px;
+    margin: 0 0 12px;
+    animation: drop-in 0.7s var(--ease) both;
+}
+
+/* ---------- Вкладки ---------- */
+
+.tabs {
+    position: relative;
+    display: inline-flex;
+    gap: 4px;
+    margin-bottom: 14px;
+    padding-bottom: 6px;
+    animation: fade-in 0.7s ease 0.1s both;
+}
+
+.tab {
+    font-family: 'Inconsolata', monospace;
+    font-size: 15px;
+    padding: 4px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: none;
+    color: var(--green);
+    opacity: 0.6;
+    cursor: pointer;
+    outline: none;
+    transition: opacity 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.tab:hover,
+.tab:focus-visible {
+    opacity: 1;
+}
+
+.tab:focus-visible {
+    background-color: rgba(132, 169, 140, 0.1);
+}
+
+.tab.active {
+    color: var(--light_grey);
+    opacity: 1;
+}
+
+.tab-indicator {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--green);
+    transition: transform 0.35s var(--ease), width 0.35s var(--ease);
+}
+
+.panel {
+    animation: fade-up 0.45s var(--ease) both;
+}
+
+/* ---------- Поле ввода и кнопки ---------- */
+
+.input-row {
+    margin: 0;
+}
+
+.field {
+    position: relative;
+    display: inline-block;
+    width: 320px;
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+.field input {
+    font-family: 'Inconsolata', monospace;
+    box-sizing: border-box;
+    border: 0;
+    color: var(--grey);
+    background-color: var(--green);
+    padding: 10px 40px 10px 10px;
+    font-size: 16px;
+    width: 100%;
+    margin: 10px 0;
+    height: 40px;
+    outline: none;
+    vertical-align: middle;
+    transition: box-shadow 0.25s ease;
+}
+
+.field input::placeholder {
+    color: var(--grey);
+    opacity: 0.65;
+    transition: opacity 0.25s ease;
+}
+
+.field input:focus::placeholder {
+    opacity: 0.4;
+}
+
+.field input:focus {
+    box-shadow: 0 0 0 3px rgba(233, 245, 219, 0.15);
+}
+
+.dice {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    width: 30px;
+    height: 30px;
+    margin-top: -15px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--grey);
+    opacity: 0.6;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    outline: none;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.dice:hover,
+.dice:focus-visible {
+    opacity: 1;
+    background-color: rgba(44, 51, 51, 0.1);
+}
+
+.dice.spin svg {
+    animation: spin 0.5s var(--ease);
+}
+
+.send {
+    font-family: 'Inconsolata', monospace;
+    border: 0;
+    background-color: var(--green);
+    padding: 10px 20px;
+    min-width: calc(10ch + 40px);
+    font-size: 16px;
+    cursor: pointer;
+    height: 40px;
+    outline: none;
+    color: var(--grey);
+    vertical-align: middle;
+    transition: filter 0.2s ease, transform 0.15s ease, box-shadow 0.25s ease;
+}
+
+.send:hover {
+    filter: brightness(1.1);
+}
+
+.send:active {
+    transform: scale(0.96);
+}
+
+.send:focus-visible {
+    box-shadow: 0 0 0 3px rgba(233, 245, 219, 0.15);
+}
+
+.hint {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--green);
+    opacity: 0.45;
+    animation: fade-in 0.7s ease 0.3s both;
+}
+
+/* На телефонах подсказки про клавиатуру не нужны */
+@media (hover: none) {
+    .hint {
+        display: none;
+    }
+}
+
+/* ---------- Результат ---------- */
+
+.result {
+    animation: fade-up 0.45s var(--ease) both;
+}
+
+.output {
+    margin: 20px auto 0;
+    font-size: 20px;
+    color: var(--green);
+    max-width: 450px;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    font-family: initial;
+    min-height: 1.2em;
+}
+
+.output.flash {
+    animation: flash 0.5s ease;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.ghost {
+    font-family: 'Inconsolata', monospace;
+    font-size: 14px;
+    padding: 6px 12px;
+    border: 1px solid var(--green_soft);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--green);
+    cursor: pointer;
+    outline: none;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+
+.ghost:hover,
+.ghost:focus-visible {
+    color: var(--light_grey);
+    border-color: var(--green);
+}
+
+.ghost:active {
+    transform: scale(0.95);
+}
+
+.ghost.done {
+    color: var(--grey);
+    background-color: var(--green);
+    border-color: var(--green);
+}
+
+.ghost.done:hover,
+.ghost.done:focus-visible {
+    filter: brightness(1.1);
+}
+
+.ghost.small {
+    font-size: 13px;
+    padding: 4px 10px;
+}
+
+.warn {
+    color: var(--orange);
+}
+
+p.warn {
+    margin: 12px 0 0;
+    font-size: 13px;
+    animation: fade-in 0.3s ease both;
+}
+
+/* ---------- Ник ---------- */
+
+.nick-settings {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+    animation: fade-in 0.7s ease 0.3s both;
+}
+
+.power-panel {
+    margin-top: 12px;
+    animation: fade-up 0.3s var(--ease) both;
+}
+
+.power-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+/* Переключатель «в начале / в конце» */
+.segmented {
+    display: inline-flex;
+    padding: 2px;
+    border: 1px solid rgba(132, 169, 140, 0.25);
+    border-radius: 999px;
+}
+
+.segment {
+    font-family: 'Inconsolata', monospace;
+    font-size: 13px;
+    padding: 3px 12px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--green);
+    cursor: pointer;
+    outline: none;
+    transition: color 0.2s ease, background-color 0.25s var(--ease);
+}
+
+.segment:hover,
+.segment:focus-visible {
+    color: var(--light_grey);
+}
+
+.segment.active {
+    color: var(--grey);
+    background-color: var(--green);
+}
+
+.chip {
+    font-family: 'Inconsolata', monospace;
+    font-size: 13px;
+    padding: 3px 9px;
+    border: 1px solid rgba(132, 169, 140, 0.25);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--green);
+    cursor: pointer;
+    outline: none;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+
+.chip:hover,
+.chip:focus-visible {
+    color: var(--light_grey);
+    border-color: var(--green);
+}
+
+.chip:active {
+    transform: scale(0.95);
+}
+
+.chip.active {
+    color: var(--grey);
+    background-color: var(--green);
+    border-color: var(--green);
+}
+
+.tag-input {
+    width: 7ch;
+    cursor: text;
+    text-align: center;
+}
+
+.tag-input::placeholder {
+    color: var(--green);
+    opacity: 0.5;
+}
+
+.nick-length {
+    margin: 10px 0 0;
+    font-size: 13px;
+    color: var(--green);
+    opacity: 0.6;
+}
+
+.nick-length.warn {
+    color: var(--orange);
+    opacity: 1;
+}
+
+/* ---------- Тренажёр ---------- */
+
+.typing-stats {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    min-height: 20px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--green);
+    opacity: 0.8;
+    font-variant-numeric: tabular-nums;
+}
+
+.typing-game {
+    position: relative;
+    cursor: text;
+}
+
+.typing-content {
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Фокус ушёл — размываем всю игру целиком */
+.typing-content.blurred {
+    filter: blur(6px);
+    opacity: 0.4;
+    user-select: none;
+}
+
+.typing-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: calc(26px * 1.7 * 3); /* место под три строки — ничего не прыгает */
+    padding: 16px 8px;
+}
+
+.typing-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    font-size: 16px; /* чтобы iOS не увеличивал страницу */
+    pointer-events: none;
+}
+
+.typing-text {
+    position: relative;
+    font-family: 'Inconsolata', monospace;
+    flex: 1;
+    font-size: 26px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    animation: fade-up 0.4s var(--ease) both;
+}
+
+.typing-overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+    color: var(--light_grey);
+    pointer-events: none;
+    animation: fade-in 0.3s ease both;
+}
+
+.word {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.space {
+    white-space: pre;
+}
+
+.char {
+    color: rgba(132, 169, 140, 0.55);
+    transition: color 0.1s ease;
+}
+
+.char.ok {
+    color: var(--light_grey);
+}
+
+.char.bad {
+    color: var(--red);
+}
+
+.space.bad {
+    background-color: rgba(224, 122, 111, 0.35);
+    border-radius: 3px;
+}
+
+.caret {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    border-radius: 1px;
+    background-color: var(--light_grey);
+    transition: transform 0.1s ease;
+}
+
+.caret.idle {
+    animation: blink 1s steps(1) infinite;
+}
+
+.typing-results {
+    padding: 10px 0 4px;
+    animation: fade-up 0.5s var(--ease) both;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.stat-value {
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--light_grey);
+    font-variant-numeric: tabular-nums;
+}
+
+.stat.big .stat-value {
+    font-size: 64px;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    opacity: 0.7;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: center;
+    gap: 36px;
+    margin-top: 22px;
+}
+
+.record {
+    margin: 16px 0 0;
+    font-size: 15px;
+    color: var(--green);
+    animation: pop 0.5s var(--ease) 0.2s both;
+}
+
+.typing-results .actions {
+    margin-top: 26px;
+}
+
+.typing .hint {
+    margin-top: 18px;
+}
+
+/* ---------- Общее ---------- */
+
+.shake {
+    animation: shake 0.4s ease;
+}
+
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+input::selection {
+    background-color: var(--grey);
+    color: var(--green);
+}
+
+::selection {
+    background-color: var(--green);
+    color: var(--grey);
+}
+
+@keyframes drop-in {
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes flash {
+    40% {
+        color: var(--light_grey);
+        transform: scale(1.03);
+    }
+}
+
+@keyframes pop {
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shake {
+    20%, 60% {
+        transform: translateX(-6px);
+    }
+    40%, 80% {
+        transform: translateX(6px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
