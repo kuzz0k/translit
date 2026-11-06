@@ -2,21 +2,21 @@
     --grey: #2c3333;
     --light_grey: #e9f5db;
     --green: #84a98c;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media screen and (min-width: 450px) {
-    button {
+    #form button {
         border-radius: 0 10px 10px 0;
     }
 
     input {
         border-radius: 10px 0 0 10px;
     }
-
 }
 
 @media screen and (max-width: 450px) {
-    button {
+    #form button {
         border-radius: 10px;
     }
 
@@ -29,35 +29,62 @@ body {
     font-family: 'Inconsolata', monospace;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding-top: 30vh;
+    align-items: flex-start;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 30vh 16px 40px;
     margin: 0;
     background-color: var(--grey);
 }
 
 #container {
     text-align: center;
+    max-width: 100%;
 }
 
 h1 {
     color: var(--light_grey);
     font-size: 35px;
+    animation: drop-in 0.7s var(--ease) both;
+}
+
+#form {
+    margin: 0;
+    animation: fade-up 0.7s var(--ease) 0.15s both;
 }
 
 input {
     font-family: 'Inconsolata', monospace;
+    box-sizing: border-box;
     border: 0;
     color: var(--grey);
     background-color: var(--green);
     padding: 10px;
     font-size: 16px;
-    width: 300px;
+    width: 320px;
+    max-width: 100%;
     margin: 10px 0;
-    height: 20px;
+    height: 40px;
     outline: none;
+    vertical-align: middle;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-button {
+input::placeholder {
+    color: var(--grey);
+    opacity: 0.65;
+    transition: opacity 0.25s ease;
+}
+
+input:focus::placeholder {
+    opacity: 0.4;
+}
+
+input:focus {
+    box-shadow: 0 0 0 3px rgba(233, 245, 219, 0.15);
+}
+
+#form button {
     font-family: 'Inconsolata', monospace;
     border: 0;
     background-color: var(--green);
@@ -67,18 +94,89 @@ button {
     height: 40px;
     outline: none;
     color: var(--grey);
+    vertical-align: middle;
+    transition: filter 0.2s ease, transform 0.15s ease, box-shadow 0.25s ease;
+}
+
+#form button:hover {
+    filter: brightness(1.1);
+}
+
+#form button:active {
+    transform: scale(0.96);
+}
+
+#form button:focus-visible {
+    box-shadow: 0 0 0 3px rgba(233, 245, 219, 0.15);
+}
+
+#result {
+    animation: none;
+}
+
+#result.appear {
+    animation: fade-up 0.45s var(--ease) both;
 }
 
 #output {
-    margin-top: 20px;
+    margin: 20px auto 0;
     font-size: 20px;
     color: var(--green);
     max-width: 450px;
-    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
     font-family: initial;
+    min-height: 1.2em;
 }
 
-button, input[type="submit"] {
+/* Мигающий курсор во время «печати» */
+#output.typing::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 2px;
+    vertical-align: -0.12em;
+    background-color: var(--green);
+    animation: blink 0.6s steps(1) infinite;
+}
+
+#copyButton {
+    font-family: 'Inconsolata', monospace;
+    font-size: 14px;
+    margin-top: 14px;
+    padding: 6px 12px;
+    border: 1px solid rgba(132, 169, 140, 0.4);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--green);
+    cursor: pointer;
+    outline: none;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+
+#copyButton:hover,
+#copyButton:focus-visible {
+    color: var(--light_grey);
+    border-color: var(--green);
+}
+
+#copyButton:active {
+    transform: scale(0.95);
+}
+
+#copyButton.copied {
+    color: var(--grey);
+    background-color: var(--green);
+    border-color: var(--green);
+    animation: pop 0.3s var(--ease);
+}
+
+.shake {
+    animation: shake 0.4s ease;
+}
+
+button {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -86,7 +184,7 @@ button, input[type="submit"] {
 
 input::selection {
     background-color: var(--grey);
-    color: var(--green); 
+    color: var(--green);
 }
 
 ::selection {
@@ -94,12 +192,55 @@ input::selection {
     color: var(--grey);
 }
 
-input::-webkit-selection {
-    background-color: var(--grey);
-    color: var(--green); 
+@keyframes drop-in {
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }
 
-::-webkit-selection {
-    background-color: var(--green);
-    color: var(--grey);
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes pop {
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+@keyframes shake {
+    20%, 60% {
+        transform: translateX(-6px);
+    }
+    40%, 80% {
+        transform: translateX(6px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

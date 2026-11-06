@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Переводит русский текст в транслит">
+    <meta name="theme-color" content="#2c3333">
+    <title>TRANSLIT</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2384a98c'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='20' text-anchor='middle' fill='%232c3333'%3ET%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;500&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap" rel="stylesheet"> 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRANSLIT</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
     <div id="container">
         <h1>Транслит</h1>
-        <input type="text" id="messageInput" placeholder="Введите ваше сообщение">
-        <button onclick="displayMessage()">Отправить</button>
-        <p id="output"></p>
+        <form id="form" autocomplete="off">
+            <input type="text" id="messageInput" placeholder="Введите ваше сообщение" aria-label="Сообщение" autofocus>
+            <button type="submit">Отправить</button>
+        </form>
+        <div id="result" hidden>
+            <p id="output" aria-live="polite"></p>
+            <button type="button" id="copyButton">копировать</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
